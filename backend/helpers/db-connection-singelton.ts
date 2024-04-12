@@ -6,7 +6,11 @@ import {
 
 let connection: Connection | null = null;
 
-export async function connectToDb(config: ConnectionOptions): Promise<void> {
+export type DbConnectionConfig = Required<
+	Pick<ConnectionOptions, 'host' | 'user' | 'port' | 'database' | 'password'>
+>;
+
+export async function connectToDb(config: DbConnectionConfig): Promise<void> {
 	try {
 		connection?.destroy();
 		connection = await createConnection(config);
