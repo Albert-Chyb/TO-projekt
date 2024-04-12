@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 		};
 		const [results] = await req.db.query(queryOptions);
 
-		res.json((<RowDataPacket[]>results)[0]);
+		res.json((<RowDataPacket[]>results).flat(1));
 	} catch (error) {
 		console.error(error);
 		res.status(500).send('An error occurred while fetching tables');
