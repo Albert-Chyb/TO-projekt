@@ -13,8 +13,7 @@ router.get('/', async (req, res) => {
 
 		res.json((<RowDataPacket[]>results).flat(1));
 	} catch (error) {
-		console.error(error);
-		res.status(500).send('An error occurred while fetching tables');
+		res.status(500).json(error);
 	}
 });
 

@@ -1,4 +1,5 @@
 import { Request, Router } from 'express';
+import { z } from 'zod';
 import { connectToDb } from '../helpers/db-connection-singelton';
 import {
 	DbConnectionConfig,
@@ -7,16 +8,23 @@ import {
 
 const router = Router();
 
-router.post('/', async (req: Request<{}, {}, DbConnectionConfig>, res) => {
-	try {
-		const config = dbConnectionConfig.parse(req.body);
+router.post(
+	'/',
+	async (req: Request<{}, boolean | unknown, DbConnectionConfig>, res) => {
+		try {
+			const config = dbConnectionConfig.parse(req.body);
 
-		await connectToDb(config);
+			await connectToDb(config);
 
-		return res.send(true);
-	} catch (error) {
-		return res.status(500).json(error as any);
+			return res.send(true);
+		} catch (error) {
+			if (error instanceof z.ZodError) {
+				res.status(400).json(error.message);
+			} else {
+				return res.status(500).json(error);
+			}
+		}
 	}
-});
+);
 
 export default router;

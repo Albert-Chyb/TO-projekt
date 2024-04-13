@@ -1,4 +1,5 @@
 import express from 'express';
+import z from 'zod';
 import { columnsRouteGetParamsSchema } from '../models/columns-route-get-params';
 
 const router = express.Router();
@@ -14,8 +15,11 @@ router.get('/:tableName', async (req, res) => {
 
 		res.json(results);
 	} catch (error) {
-		console.error(error);
-		res.status(500).send('An error occurred while fetching columns');
+		if (error instanceof z.ZodError) {
+			res.status(400).json(error.message);
+		} else {
+			res.status(500).json(error);
+		}
 	}
 });
 
