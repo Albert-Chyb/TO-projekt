@@ -1,10 +1,11 @@
 import express from 'express';
+import { columnsRouteGetParamsSchema } from '../models/columns-route-get-params';
 
 const router = express.Router();
 
 router.get('/:tableName', async (req, res) => {
 	try {
-		const { tableName } = req.params;
+		const { tableName } = columnsRouteGetParamsSchema.parse(req.params);
 		const queryOptions = {
 			sql: 'SHOW COLUMNS FROM ??',
 			values: [tableName],
