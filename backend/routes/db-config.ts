@@ -1,8 +1,6 @@
 import { Request, Router } from 'express';
-import {
-	DbConnectionConfig,
-	connectToDb,
-} from '../helpers/db-connection-singelton';
+import { connectToDb } from '../helpers/db-connection-singelton';
+import { DbConnectionConfig } from '../models/db-connection-config';
 
 const router = Router();
 

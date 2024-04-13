@@ -1,14 +1,7 @@
-import {
-	Connection,
-	ConnectionOptions,
-	createConnection,
-} from 'mysql2/promise';
+import { Connection, createConnection } from 'mysql2/promise';
+import { DbConnectionConfig } from '../models/db-connection-config';
 
 let connection: Connection | null = null;
-
-export type DbConnectionConfig = Required<
-	Pick<ConnectionOptions, 'host' | 'user' | 'port' | 'database' | 'password'>
->;
 
 export async function connectToDb(config: DbConnectionConfig): Promise<void> {
 	try {
