@@ -1,12 +1,17 @@
 import { Request, Router } from 'express';
 import { connectToDb } from '../helpers/db-connection-singelton';
-import { DbConnectionConfig } from '../models/db-connection-config';
+import {
+	DbConnectionConfig,
+	dbConnectionConfig,
+} from '../models/db-connection-config';
 
 const router = Router();
 
 router.post('/', async (req: Request<{}, {}, DbConnectionConfig>, res) => {
 	try {
-		await connectToDb(req.body);
+		const config = dbConnectionConfig.parse(req.body);
+
+		await connectToDb(config);
 
 		return res.send(true);
 	} catch (error) {
